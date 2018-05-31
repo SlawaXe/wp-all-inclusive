@@ -82,5 +82,5 @@ Clean-Param: openstat       # аналогично
 # то пишем протокол, если нужно указать порт, указываем). Команду Host понимает 
 # Яндекс и Mail.RU, Google не учитывает.
 
-Host: https://betonland.ru
-Sitemap: https://betonland.ru/sitemap.xml
+Host: https://site-name.ru
+Sitemap: https://site-name.ru/sitemap.xml

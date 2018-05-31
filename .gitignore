@@ -3,6 +3,7 @@ db-sync
 content/upgrade/
 node_modules
 content/plugins
+.git
 wp
 vendor
 *.sql
@@ -13,4 +14,3 @@ npm-debug.log
 */.DS_Store
 */*/.DS_Store
 .DS_Store
-package-lock.json
