@@ -1,41 +1,75 @@
 // Rem output with px fallback
 @mixin font-size($sizeValue: 1) {
-	font-size: ($sizeValue * 16) * 1px;
-	font-size: $sizeValue * 1rem;
+    font-size: ($sizeValue * 16) * 1px;
+    font-size: $sizeValue * 1rem;
 }
 
 // Center block
 @mixin center-block {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+    display: block;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @mixin center-table {
-	display: table;
-	margin-right: auto;
-	margin-left: auto;
+    display: table;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 @mixin img-cover($position) {
-	object-position: $position;
-	object-fit: cover;
+    object-position: $position;
+    object-fit: cover;
 }
 
 // Clearfix
 @mixin clearfix() {
-	content: "";
-	display: table;
-	table-layout: fixed;
+    content: "";
+    display: table;
+    table-layout: fixed;
 }
 
 // Clear after (not all clearfix need this also)
 @mixin clearfix-after() {
-	clear: both;
+    clear: both;
+}
+
+// Pseudo :before and :after
+@mixin pseudo($display: block, $pos: absolute, $content: ''){
+  content: $content;
+  display: $display;
+  position: $pos;
+}
+
+@mixin overlay($bgc: rgba(#000, .6)) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $bgc;
+}
+
+/* Input placeholder
+ * - Exemple
+ *
+ textarea {
+ @include input-placeholder {
+   color: $grey;
+ }
+}
+*/
+@mixin input-placeholder {
+  &.placeholder { @content; }
+  &:-moz-placeholder { @content; }
+  &::-moz-placeholder { @content; }
+  &:-ms-input-placeholder { @content; }
+  &::-webkit-input-placeholder { @content; }
 }
 
 @mixin media($media) {
-	@media only screen and (max-width: $media) { @content; }
+    @media only screen and (max-width: $media) { @content; }
 }
 
 $xs: 480px;

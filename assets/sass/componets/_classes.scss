@@ -38,6 +38,23 @@
 .pd-r-0{padding-right: 0;}
 .pd-l-0{padding-left: 0;}
 
+.block-center{
+  display: block;
+  width: auto;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.block-table-center{
+  display: table;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.w100 {
+  width: 100%;
+}
+
 .white-popup {
     position: relative;
     background: #FFF;

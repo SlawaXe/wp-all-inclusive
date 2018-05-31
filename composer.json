@@ -19,7 +19,13 @@
     "php": ">=5.5",
     "composer/installers": "^1.0.12",
     "johnpbloch/wordpress": "^4.8.2",
-    "wpackagist-plugin/wp-pagenavi": "^2.91"
+    "wpackagist-plugin/autoptimize": "^2.3.4",
+    "wpackagist-plugin/tinymce-advanced": "^4.7.11",
+    "wpackagist-plugin/wp-translitera": "^170510",
+    "wpackagist-plugin/better-wp-security": "^7.0.1",
+    "wpackagist-plugin/contact-form-7": "^5.0.2",
+    "wpackagist-plugin/ewww-image-optimizer": "^4.2.1",
+    "wpackagist-plugin/google-sitemap-generator": "^4.0.9"
   },
   "extra": {
     "installer-paths": {
