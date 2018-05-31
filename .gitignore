@@ -9,4 +9,5 @@
 /local-config.php
 /composer.lock
 /wp-config.php
+/package-lock.json
 .DS_Store
