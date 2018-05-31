@@ -1,0 +1,10 @@
+/shared
+/local-config.php
+/*.sql
+/db-sync
+/content/upgrade/
+/node_modules
+/content/plugins
+/wp
+/wp-config.php
+.DS_Store
