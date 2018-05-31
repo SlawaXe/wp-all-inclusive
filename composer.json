@@ -1,0 +1,32 @@
+{
+  "name": "slava-khe/default-theme",
+  "description": "Default theme WordPress",
+  "type": "website",
+  "license": "",
+  "homepage": "https://saitodelove.ru/",
+  "authors": [{
+      "name": "Saitodelove",
+      "email": "mail@saitodelove.ru",
+      "homepage": "https://saitodelove.ru/"
+  }],
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ],
+  "require": {
+    "php": ">=5.5",
+    "composer/installers": "^1.0.12",
+    "johnpbloch/wordpress": "^4.8.2",
+    "wpackagist-plugin/wp-pagenavi": "^2.91"
+  },
+  "extra": {
+    "installer-paths": {
+      "content/plugins/{$name}/": ["type:wordpress-plugin"],
+      "content/themes/{$name}/": ["type:wordpress-theme"],
+      "content/mu-plugins/{$name}/": ["type:wordpress-muplugin"]
+    },
+    "wordpress-install-dir": "wp/"
+  }
+}
