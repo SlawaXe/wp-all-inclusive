@@ -1,0 +1,50 @@
+// Rem output with px fallback
+@mixin font-size($sizeValue: 1) {
+	font-size: ($sizeValue * 16) * 1px;
+	font-size: $sizeValue * 1rem;
+}
+
+// Center block
+@mixin center-block {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@mixin center-table {
+	display: table;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+@mixin img-cover($position) {
+	object-position: $position;
+	object-fit: cover;
+}
+
+// Clearfix
+@mixin clearfix() {
+	content: "";
+	display: table;
+	table-layout: fixed;
+}
+
+// Clear after (not all clearfix need this also)
+@mixin clearfix-after() {
+	clear: both;
+}
+
+@mixin media($media) {
+	@media only screen and (max-width: $media) { @content; }
+}
+
+$xs: 480px;
+$sm: 767px;
+$md: 991px;
+$lg: 1199px;
+//$xl: 1399px;
+
+// $small: 1100px;
+// $medium: 1350px;
+// $large: 1570px;
+// $extra-large: 1790px;

@@ -1,0 +1,39 @@
+/*!
+Theme Name: Default Theme
+Theme URI:
+Author:
+Author URI:
+Description:
+Version: 1.0.1
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Tags: no-tag
+*/
+
+// Bootstrap
+@import 'bootstrap';
+
+// Mixins
+@import 'mixins/mixins-master';
+
+// Components
+@import 'componets/colors';
+@import 'componets/classes';
+@import 'componets/fonts';
+
+// Layout
+@import 'layout/header';
+@import 'layout/footer';
+// @import 'layout/aside';
+
+// Pages
+// @import 'pages/default-page';
+@import 'pages/home';
+
+// Vendors
+// @import './node_modules/magnific-popup/dist/magnific-popup';
+// @import './node_modules/owl.carousel/dist/assets/owl.carousel';
+// @import './node_modules/owl.carousel/dist/assets/owl.theme.default';
+
+// Other
+@import 'primary';

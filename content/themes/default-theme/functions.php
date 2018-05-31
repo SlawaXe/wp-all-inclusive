@@ -116,8 +116,9 @@ function default_theme_scripts() {
 
     wp_enqueue_script( 'default_theme-custom', get_template_directory_uri() . '/js/main.min.js', array(), '20151215', true );
 
-    wp_deregister_script('jquery');
-    wp_enqueue_script('jquery');
+    // Remove Jquery
+    // wp_deregister_script('jquery');
+    // wp_enqueue_script('jquery');
 
 
     if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -126,10 +127,12 @@ function default_theme_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'default_theme_scripts' );
 
-add_action( 'get_header', 'css_in_head');
+add_action( 'get_header', 'css_in_head', 99);
 function css_in_head( $name ){
     $css_content = file_get_contents(get_stylesheet_directory_uri() . '/style.min.css');
-    echo '<style>' . $css_content . '</style>';
+    $css_content_one_line = str_replace(array("\r", "\n"), '', $css_content);
+
+    echo '<style>' . $css_content_one_line . '</style>';
 }
 
 
@@ -180,14 +183,6 @@ if( function_exists('acf_add_options_page') ) {
 }
 */
 
-/*  Tiny MCE setting
-*/
-function my_theme_add_editor_styles() {
-    add_editor_style( '/inc/custom-editor-style.css' );
-}
-
-add_action( 'init', 'my_theme_add_editor_styles' );
-
 // Customize mce editor font sizes
 if ( ! function_exists( 'wpex_mce_text_sizes' ) ) {
     function wpex_mce_text_sizes( $initArray ){
@@ -229,8 +224,15 @@ add_shortcode('year', 'site_year');
  * Styles and scripts in admin
  */
 function admin_styles_and_scripts() {
-    wp_enqueue_style("style-custom-admin", get_bloginfo('stylesheet_directory') . "/inc/style-admin.css");
-    wp_enqueue_script("script-custom-admin", get_bloginfo('stylesheet_directory') . "/inc/script-admin.js");
+    ?>
+        <style>
+            /*  Write here your stichele  */
+        </style>
+
+        <script>
+            /*  Write here your script  */
+        </script>
+    <?php
 }
 // add_action('admin_head', 'admin_styles_and_scripts');
 
