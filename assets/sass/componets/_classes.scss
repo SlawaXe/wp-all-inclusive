@@ -55,13 +55,19 @@
   width: 100%;
 }
 
+.full-width {
+  margin: 0 calc(0px - (100vw - 100%)/2);
+  padding-left: calc((100vw - 100%)/2);
+  padding-right: calc((100vw - 100%)/2);
+}
+
 .white-popup {
-    position: relative;
-    background: #FFF;
-    padding: 20px 30px;
-    width: 600px;
-    max-width: 100%;
-    margin: 0 auto;
+  position: relative;
+  background: #FFF;
+  padding: 20px 30px;
+  width: 600px;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 #mobile-nav-trigger {

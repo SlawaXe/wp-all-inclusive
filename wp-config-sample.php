@@ -25,6 +25,12 @@ define( 'WP_CONTENT_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/content' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', 'utf8_general_ci' );
 
+// ================================================
+// Contact form 7 - disable "auto added tags"
+// ================================================
+
+// define( 'WPCF7_AUTOP', false );
+
 // ==============================================================
 // Salts, for security
 // Grab these from: https://api.wordpress.org/secret-key/1.1/salt

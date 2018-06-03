@@ -10,6 +10,10 @@ License URI: LICENSE
 Tags: no-tag
 */
 
+// variables
+$theme-url: "/content/themes/default-theme/";
+$img: "/content/themes/default-theme/img/";
+
 // Bootstrap
 @import 'bootstrap';
 
@@ -31,9 +35,9 @@ Tags: no-tag
 @import 'pages/home';
 
 // Vendors
-// @import './node_modules/magnific-popup/dist/magnific-popup';
-// @import './node_modules/owl.carousel/dist/assets/owl.carousel';
-// @import './node_modules/owl.carousel/dist/assets/owl.theme.default';
+// @import './node_modules/magnific-popup/dist/magnific-popup.css';
+// @import './node_modules/owl.carousel/dist/assets/owl.carousel.css';
+// @import './node_modules/owl.carousel/dist/assets/owl.theme.default.css';
 
 // Other
 @import 'primary';
