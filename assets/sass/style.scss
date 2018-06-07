@@ -35,9 +35,9 @@ $img: "/content/themes/default-theme/img/";
 @import 'pages/home';
 
 // Vendors
-// @import './node_modules/magnific-popup/dist/magnific-popup.css';
-// @import './node_modules/owl.carousel/dist/assets/owl.carousel.css';
-// @import './node_modules/owl.carousel/dist/assets/owl.theme.default.css';
+@import './node_modules/magnific-popup/dist/magnific-popup';
+@import './node_modules/owl.carousel/dist/assets/owl.carousel';
+@import './node_modules/owl.carousel/dist/assets/owl.theme.default';
 
 // Other
 @import 'primary';

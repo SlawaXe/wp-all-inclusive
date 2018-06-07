@@ -236,6 +236,11 @@ function admin_styles_and_scripts() {
 }
 // add_action('admin_head', 'admin_styles_and_scripts');
 
+// Media uploads permissions
+if(get_option('upload_path')=='content/uploads' || get_option('upload_path')==null) {
+    update_option('upload_path',WP_CONTENT_DIR.'/uploads');
+}
+
 /**
  * Custom template tags for this theme.
  */
