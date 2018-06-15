@@ -132,7 +132,7 @@ function css_in_head( $name ){
     $css_content = file_get_contents(get_stylesheet_directory_uri() . '/style.min.css');
     $css_content_one_line = str_replace(array("\r", "\n"), '', $css_content);
 
-    echo '<style>' . $css_content_one_line . '</style>';
+    echo '<style>' . $css_content . '</style>';
 }
 
 
@@ -159,6 +159,7 @@ remove_action('wp_print_styles', 'print_emoji_styles');
 remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 remove_action( 'admin_print_styles', 'print_emoji_styles' );
 
+
 /*  Page general setting ACF
 */
 /*
@@ -182,6 +183,64 @@ if( function_exists('acf_add_options_page') ) {
     ));
 }
 */
+
+/**************************  Editor formats  **************************/
+
+function wpb_mce_buttons_2($buttons) {
+    array_unshift($buttons, 'fontsizeselect');
+    array_unshift($buttons, 'styleselect');
+    return $buttons;
+}
+add_filter('mce_buttons_2', 'wpb_mce_buttons_2');
+
+/*
+* Callback function to filter the MCE settings
+*/
+
+function my_mce_before_init_insert_formats( $init_array ) {
+
+// Define the style_formats array
+
+    $style_formats = array(
+        // Each array child is a format with it's own settings
+        array(
+            'title' => 'Font weight light',
+            'block' => 'span',
+            'classes' => 'fw-light',
+            'wrapper' => true,
+        ),
+        array(
+            'title' => 'Font weight extra bold',
+            'block' => 'span',
+            'classes' => 'fw-extra-bold',
+            'wrapper' => true,
+        ),
+        array(
+            'title' => 'Strong',
+            'inline' => 'span',
+            'classes' => 'strong',
+            'wrapper' => false,
+        ),
+        array(
+            'title' => 'Uppercase',
+            'inline' => 'span',
+            'classes' => 'text-uppercase',
+            'wrapper' => false,
+        ),
+        array(
+            'title' => 'Underlined',
+            'inline' => 'u',
+            'wrapper' => false,
+        ),
+    );
+    // Insert the array, JSON ENCODED, into 'style_formats'
+    $init_array['style_formats'] = json_encode( $style_formats );
+
+    return $init_array;
+
+}
+// Attach callback to 'tiny_mce_before_init'
+// add_filter( 'tiny_mce_before_init', 'my_mce_before_init_insert_formats' );
 
 // Customize mce editor font sizes
 if ( ! function_exists( 'wpex_mce_text_sizes' ) ) {
@@ -219,6 +278,21 @@ function site_year(){
 }
 
 add_shortcode('year', 'site_year');
+
+/**
+ *  Shortcode exemple
+ */
+function shortcode( $atts ) {
+    $params = shortcode_atts( array(
+            'param_1' => '#',
+            'param_2' => '#',
+            'param_3' => '#%'
+    ), $atts );
+
+    return '<div>'. $params['param_1'] .'</div>';
+}
+
+// add_shortcode( 'shortcode', 'shortcode' );
 
 /**
  * Styles and scripts in admin
