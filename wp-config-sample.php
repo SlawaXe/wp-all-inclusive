@@ -87,3 +87,12 @@ define( 'STAGING_DOMAIN', '%%WP_STAGING_DOMAIN%%' ); // Does magic in WP Stack t
 if ( !defined( 'ABSPATH' ) )
 	define( 'ABSPATH', dirname( __FILE__ ) . '/wp/' );
 require_once( ABSPATH . 'wp-settings.php' );
+
+// Принудительное использование SSL
+define('FORCE_SSL_ADMIN', true);
+
+// Отключаем крон
+define('DISABLE_CRON', true);
+
+// Массив с названиями плагинами для запрета обновления
+// $DISABLE_UPDATE = array( 'advanced-custom-fields-pro');

@@ -362,3 +362,62 @@ remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 
 // Remove shortlink /?p=
 remove_action('wp_head', 'wp_shortlink_wp_head');
+
+
+/*
+*  WP SECURITY
+*/
+
+// Убираем показ лишней информации
+add_filter('login_errors',create_function('$a', "return null;"));
+
+// Скрываем версию Wordpress'a
+remove_action('wp_head', 'wp_generator');
+
+function _remove_script_version( $src ){
+$parts = explode( '?', $src );
+return $parts[0];
+}
+// Удаляем версию скриптов
+add_filter( 'script_loader_src', '_remove_script_version', 15, 1 );
+
+// Удаляем версию стилей
+add_filter( 'style_loader_src', '_remove_script_version', 15, 1 );
+
+// запрет обновления выборочных плагинов
+function filter_plugin_updates( $update ) {    
+    global $DISABLE_UPDATE; // см. wp-config.php
+    if( !is_array($DISABLE_UPDATE) || count($DISABLE_UPDATE) == 0 ){  return $update;  }
+    foreach( $update->response as $name => $val ){
+        foreach( $DISABLE_UPDATE as $plugin ){
+            if( stripos($name,$plugin) !== false ){
+                unset( $update->response[ $name ] );
+            }
+        }
+    }
+    return $update;
+}
+
+// add_filter( 'site_transient_update_plugins', 'filter_plugin_updates' );
+
+/*
+  Plugin Name: Block Bad Queries
+  Plugin URI: perishablepress.com/press/2009/12/22/protect-wordpress-against-malicious-url-requests
+  Description: Protect WordPress Against Malicious URL Requests
+  Author URI: perishablepress.com
+  Author: Perishable Press
+  Version: 1.0
+*/
+
+if (
+    strlen($_SERVER['REQUEST_URI']) > 255 ||
+    strpos($_SERVER['REQUEST_URI'], "eval(") ||
+    strpos($_SERVER['REQUEST_URI'], "CONCAT") ||
+    strpos($_SERVER['REQUEST_URI'], "UNION+SELECT") ||
+    strpos($_SERVER['REQUEST_URI'], "base64")
+) {
+    @header("HTTP/1.1 414 Request-URI Too Long");
+    @header("Status: 414 Request-URI Too Long");
+    @header("Connection: Close");
+    @exit;
+}
