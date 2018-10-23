@@ -384,6 +384,30 @@ add_filter( 'script_loader_src', '_remove_script_version', 15, 1 );
 // Удаляем версию стилей
 add_filter( 'style_loader_src', '_remove_script_version', 15, 1 );
 
+/*
+  Plugin Name: Block Bad Queries
+  Plugin URI: perishablepress.com/press/2009/12/22/protect-wordpress-against-malicious-url-requests
+  Description: Protect WordPress Against Malicious URL Requests
+  Author URI: perishablepress.com
+  Author: Perishable Press
+  Version: 1.0
+*/
+
+if( !is_admin() ) {
+    if (
+        strlen($_SERVER['REQUEST_URI']) > 255 ||
+        strpos($_SERVER['REQUEST_URI'], "eval(") ||
+        strpos($_SERVER['REQUEST_URI'], "CONCAT") ||
+        strpos($_SERVER['REQUEST_URI'], "UNION+SELECT") ||
+        strpos($_SERVER['REQUEST_URI'], "base64")
+    ) {
+        @header("HTTP/1.1 414 Request-URI Too Long");
+        @header("Status: 414 Request-URI Too Long");
+        @header("Connection: Close");
+        @exit;
+    }
+}
+
 // запрет обновления выборочных плагинов
 function filter_plugin_updates( $update ) {    
     global $DISABLE_UPDATE; // см. wp-config.php
@@ -399,25 +423,3 @@ function filter_plugin_updates( $update ) {
 }
 
 // add_filter( 'site_transient_update_plugins', 'filter_plugin_updates' );
-
-/*
-  Plugin Name: Block Bad Queries
-  Plugin URI: perishablepress.com/press/2009/12/22/protect-wordpress-against-malicious-url-requests
-  Description: Protect WordPress Against Malicious URL Requests
-  Author URI: perishablepress.com
-  Author: Perishable Press
-  Version: 1.0
-*/
-
-if (
-    strlen($_SERVER['REQUEST_URI']) > 255 ||
-    strpos($_SERVER['REQUEST_URI'], "eval(") ||
-    strpos($_SERVER['REQUEST_URI'], "CONCAT") ||
-    strpos($_SERVER['REQUEST_URI'], "UNION+SELECT") ||
-    strpos($_SERVER['REQUEST_URI'], "base64")
-) {
-    @header("HTTP/1.1 414 Request-URI Too Long");
-    @header("Status: 414 Request-URI Too Long");
-    @header("Connection: Close");
-    @exit;
-}

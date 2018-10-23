@@ -40,7 +40,7 @@ var domain       = 'wp-start-new.lc',
 //-- Browsers you care about for autoprefixing.
 //-- Browserlist https://github.com/ai/browserslist
 const AUTOPREFIXER_BROWSERS = [
-    'last 2 version',
+    'last 4 version',
     '> 1%',
     'ie >= 8',
     'ie_mob >= 10',
@@ -60,7 +60,7 @@ gulp.task( 'browser-sync', function() {
         proxy: domain,
         // `true` Automatically open the browser with BrowserSync live server.
         // `false` Stop the browser from automatically opening.
-        open: true,
+        open: false,
         // Inject CSS changes.
         // Commnet it to reload browser for every CSS change.
         injectChanges: true,
