@@ -67,3 +67,33 @@ deny from all
 order allow,deny
 deny from all
 </files>
+
+# защищаем файл wp-load
+<files wp-load.php>
+order allow,deny
+deny from all
+</files>
+
+# защищаем файл xmlrpc
+<files xmlrpc.php>
+order allow,deny
+deny from all
+</files>
+
+# защищаем файл install
+<files install.php>
+order allow,deny
+deny from all
+</files>
+
+# защищаем файл local-config-sample
+<files local-config-sample.php>
+order allow,deny
+deny from all
+</files>
+
+# защищаем файл cachee
+<files cachee.php>
+order allow,deny
+deny from all
+</files>
