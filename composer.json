@@ -26,7 +26,8 @@
     "wpackagist-plugin/contact-form-7": "^5.0.2",
     "wpackagist-plugin/ewww-image-optimizer": "^4.2.1",
     "wpackagist-plugin/google-sitemap-generator": "^4.0.9",
-    "wpackagist-plugin/permalink-manager": "^2.0.6.1"
+    "wpackagist-plugin/permalink-manager": "^2.0.6.1",
+    "wpackagist-plugin/wp-migrate-db": "^1.0.11"
   },
   "extra": {
     "installer-paths": {

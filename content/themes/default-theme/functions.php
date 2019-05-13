@@ -120,6 +120,9 @@ function default_theme_scripts() {
     // wp_deregister_script('jquery');
     // wp_enqueue_script('jquery');
 
+    // Remove Gutenberg styles
+    wp_deregister_style('wp-block-library');
+
 
     if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
         wp_enqueue_script( 'comment-reply' );
@@ -395,7 +398,7 @@ add_filter( 'style_loader_src', '_remove_script_version', 15, 1 );
 
 if( !is_admin() ) {
     if (
-        strlen($_SERVER['REQUEST_URI']) > 255 ||
+        // strlen($_SERVER['REQUEST_URI']) > 255 ||
         strpos($_SERVER['REQUEST_URI'], "eval(") ||
         strpos($_SERVER['REQUEST_URI'], "CONCAT") ||
         strpos($_SERVER['REQUEST_URI'], "UNION+SELECT") ||

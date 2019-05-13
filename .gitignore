@@ -1,6 +1,7 @@
 shared
 db-sync
 content/upgrade/
+content/languages/
 node_modules
 content/plugins
 .git
