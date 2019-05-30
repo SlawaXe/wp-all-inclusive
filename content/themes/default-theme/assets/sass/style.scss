@@ -28,16 +28,16 @@ $img: "/content/themes/default-theme/img/";
 // Layout
 @import 'layout/header';
 @import 'layout/footer';
-// @import 'layout/aside';
+@import 'layout/aside';
 
 // Pages
-// @import 'pages/default-page';
+@import 'pages/default-page';
 @import 'pages/home';
 
 // Vendors
-@import './node_modules/magnific-popup/dist/magnific-popup';
-@import './node_modules/owl.carousel/dist/assets/owl.carousel';
-@import './node_modules/owl.carousel/dist/assets/owl.theme.default';
+//@import './node_modules/magnific-popup/dist/magnific-popup';
+//@import './node_modules/owl.carousel/dist/assets/owl.carousel';
+//@import './node_modules/owl.carousel/dist/assets/owl.theme.default';
 
 // Other
 @import 'primary';

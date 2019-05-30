@@ -112,7 +112,7 @@ function default_theme_widgets_init() {
  * Enqueue scripts and styles.
  */
 function default_theme_scripts() {
-   // wp_enqueue_style( 'default_theme-style-min', get_template_directory_uri() . '/style.min.css');
+    wp_enqueue_style( 'default_theme-style-min', get_template_directory_uri() . '/style.min.css');
 
     wp_enqueue_script( 'default_theme-custom', get_template_directory_uri() . '/js/main.min.js', array(), '20151215', true );
 
@@ -130,7 +130,7 @@ function default_theme_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'default_theme_scripts' );
 
-add_action( 'get_header', 'css_in_head', 99);
+// add_action( 'get_header', 'css_in_head', 99);
 function css_in_head( $name ){
     $css_content = file_get_contents(get_stylesheet_directory_uri() . '/style.min.css');
     $css_content_one_line = str_replace(array("\r", "\n"), '', $css_content);

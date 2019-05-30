@@ -22,25 +22,30 @@ var gulp         = require('gulp'),
     clean        = require('gulp-clean'),
     jade         = require('gulp-jade');
 
-//-- Variables
-var domain       = 'wp-start-new.lc',
-    port         = 7005,
-    projectDir   = 'content/themes/default-theme/',
-//  htmlTemplate = 'template/',
-//  htmlBuild    = projectDir,
-//  htmlPretty   = true,
-    styleSass    = 'assets/sass/style.scss', // Main file scss
-    styleWatch   = 'assets/sass/**/*.scss', // scss files to be monitored
-    styleBuild   = projectDir, // where to put the compiled css file
-    jsFile       = 'assets/js/', // main file bundle
-    jsBuild      = projectDir + 'js/';
-//  imgUrl       = 'assets/img/**/*',
-//  imgUrlBuild  = projectDir + 'img';
+//-- Config
+var config = {
+    //proxy: 'site-name.local',
+    proxy: 'wp-start-new.lc',
+    port: 707,
+    browser: 'firefox', // google chrome | firefox | opera
+    openBrowser: true, // true | false
+    autoprefixLastVer: 4, // 1-4
+    path: {
+        projectDir: 'content/themes/default-theme/',
+        mainSass: 'content/themes/default-theme/assets/sass/style.scss',
+        sass: 'content/themes/default-theme/assets/sass/**/*.scss',
+        css: 'content/themes/default-theme/',
+        js: 'content/themes/default-theme/assets/js/',
+        jsReady: 'content/themes/default-theme/js/',
+        imgTemp: 'content/themes/default-theme/img/temp/',
+        imgReady: 'content/themes/default-theme/img/'
+    }
+};
 
 //-- Browsers you care about for autoprefixing.
 //-- Browserlist https://github.com/ai/browserslist
 const AUTOPREFIXER_BROWSERS = [
-    'last 4 version',
+    'last '+ config.autoprefixLastVer +' version',
     '> 1%',
     'ie >= 8',
     'ie_mob >= 10',
@@ -53,37 +58,129 @@ const AUTOPREFIXER_BROWSERS = [
     'bb >= 10'
 ];
 
+/*
+*  Common task
+*/
 gulp.task( 'browser-sync', function() {
-    browserSync.init( {
+    browserSync.init({
         // For more options
         // @link http://www.browsersync.io/docs/options/
-        proxy: domain,
+        proxy: config.proxy,
         // `true` Automatically open the browser with BrowserSync live server.
         // `false` Stop the browser from automatically opening.
-        open: false,
+        open: config.openBrowser,
         // Inject CSS changes.
         // Commnet it to reload browser for every CSS change.
         injectChanges: true,
         // Use a specific port (instead of the one auto-detected by Browsersync).
-        port: port,
+        port: config.port,
         // Open the site in Firefox
-        browser: 'firefox'
-    } );
+        browser: config.browser
+    });
 });
 
-//-- Jade
-gulp.task('jade', function(){
-  gulp.src(htmlTemplate + '/*.jade')
-    .pipe(jade({
-        pretty: htmlPretty
+gulp.task('cssjs:clear', function(done) {
+    gulp.src(config.path.css + '**/*.css', {read: false}).pipe(clean());
+    gulp.src(config.path.jsReady + '**/*.js', {read: false}).pipe(clean());
+
+    done();
+});
+
+/*
+*  JS task
+*/
+gulp.task('js', function() {
+    return gulp.src(config.path.js + 'main.js')
+           .pipe(sourcemaps.init())
+           .pipe(browserify({debug:true}))
+           .pipe(rename({suffix:'.min'}))
+           .pipe(gulp.dest(config.path.jsReady))
+           .pipe(sourcemaps.write())
+           .pipe(browserSync.stream())
+});
+
+gulp.task('js:beautifier', function(done) {
+    gulp.src(config.path.js + 'main.js')
+        .pipe(browserify({debug:true}))
+        .pipe(gulp.dest(config.path.jsReady));
+
+    done();
+});
+
+
+gulp.task('js:min', function(done) {
+    gulp.src(config.path.js + 'main.js')
+        .pipe(browserify({debug:true}))
+        .pipe(minifyJs())
+        .pipe(strip.text())
+        .pipe(rename({suffix:'.min'}))
+        .pipe(gulp.dest(config.path.jsReady));
+
+    done();
+});
+
+gulp.task('js:build', gulp.series('js:min', 'js:beautifier'));
+
+/*
+*  CSS/SASS task
+*/
+gulp.task('css:beautifier', function(done) {
+    gulp.src(config.path.mainSass)
+    .pipe(sass({
+        errLogToConsole: true
+    }))
+    .pipe(mmq({log:true}))
+    .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
+    .pipe(csscomb({configPath:'./.csscomb.json'}))
+    .pipe(gulp.dest(config.path.css))
+
+    done();
+});
+
+gulp.task('css:min', function(done) {
+    gulp.src(config.path.mainSass)
+    .pipe(sass({
+        errLogToConsole: true
+    }))
+    .pipe(mmq({log:true}))
+    .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
+    .pipe(csscomb({configPath:'./.csscomb.json'}))
+    .pipe( minifycss({
+        maxLineLen: 10,
+        cuteComments: false
+    }))
+    .pipe(strip.text())
+    .pipe(rename({suffix:'.min'}))
+    .pipe(gulp.dest(config.path.css))
+
+    done();
+});
+
+gulp.task('sass', function(done) {
+    gulp.src(config.path.mainSass)
+    .pipe(sourcemaps.init())
+    .pipe(sass({
+        errLogToConsole: true,
+        precision: 10
     }))
     .on('error', console.error.bind(console))
+    .pipe(sourcemaps.write({ includeContent: false }))
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write ())
     .pipe(browserSync.stream())
-    .pipe(gulp.dest(htmlBuild))
+    .pipe(rename({suffix:'.min'}))
+    .pipe(gulp.dest(config.path.css));
+
+    done();
 });
 
-gulp.task( 'img', function() {
-    return gulp.src( imgUrl )
+gulp.task('css:build', gulp.series('css:min', 'css:beautifier'));
+
+/*
+*  Images task
+*/
+gulp.task('img', function() {
+    return gulp.src(config.path.imgTemp)
     .pipe( imagemin([
         imageminJpeg({
             quality: 85
@@ -92,94 +189,33 @@ gulp.task( 'img', function() {
             optimizationLevel: 5
         })
     ]))
-    .pipe(gulp.dest(imgUrlBuild));
+    .pipe(gulp.dest(config.path.imgReady));
 });
 
-gulp.task( 'clean:img', ['img'], function() {
-    gulp.src(imgUrl, {read: false})
+gulp.task('clean:img', function(done) {
+    gulp.src(config.path.imgTemp, {read: false})
         .pipe(clean());
+
+    done();
 });
 
-//-- default task js
-gulp.task('js', function() {
-    return gulp.src(jsFile + 'main.js')
-           .pipe(sourcemaps.init())
-           .pipe(browserify({debug:true}))
-           .pipe(rename({suffix:'.min'}))
-           .pipe(gulp.dest(jsBuild))
-           .pipe(sourcemaps.write())
-           .pipe(browserSync.stream())
+
+/*
+*  Mains task
+*/
+gulp.task('watch', function (done) {
+  //-- Reload files changes.
+  gulp.watch(config.path.sass, gulp.series('sass')).on('change', browserSync.reload);
+  gulp.watch(config.path.js + '**/*.js', gulp.series('js')).on('change', browserSync.reload);
+  gulp.watch(config.path.projectDir + '**/*.php' ).on('change', browserSync.reload);
+  // gulp.watch(config.path.imgTemp, gulp.series('img', 'clean:img')).on('change', browserSync.reload);
+
+  done();
 });
 
-gulp.task('js:beautifier', function() {
-    gulp.src(styleBuild + '**/*.js', {read: false}).pipe(clean());
+gulp.task('default', gulp.series('sass', 'js', 'watch', 'browser-sync', (done) => {
+    done();
+}));
 
-    return gulp.src(jsFile + 'main.js')
-           .pipe(browserify({debug:true}))
-           .pipe(gulp.dest(jsBuild))
-});
-
-gulp.task('js:min', ['js:beautifier'], function() {
-    gulp.src(jsBuild + '**/*.js')
-           .pipe(minifyJs())
-           .pipe(strip.text())
-           .pipe( rename( { suffix: '.min' } ) )
-           .pipe(gulp.dest(jsBuild))
-});
-
-gulp.task('css:beautifier', function() {
-    gulp.src(styleBuild + '**/*.css', {read: false}).pipe(clean());
-
-    return gulp.src(styleSass)
-    .pipe(sass({
-        errLogToConsole: true
-    }))
-    .pipe(mmq({log:true}))
-    .pipe(autoprefixer( AUTOPREFIXER_BROWSERS ))
-    .pipe(csscomb({configPath:'./.csscomb.json'}))
-    .pipe(gulp.dest(styleBuild))
-});
-
-gulp.task('css:min', ['css:beautifier'], function() {
-    gulp.src(styleBuild + '**/*.css')
-    .pipe( minifycss( {
-        maxLineLen: 10,
-        cuteComments: false
-    }))
-    .pipe(strip.text())
-    .pipe(rename({suffix:'.min'}))
-    .pipe(gulp.dest(styleBuild ))
-});
-
-gulp.task('sass', function() {
-    gulp.src(styleSass)
-    .pipe(sourcemaps.init())
-    .pipe(sass( {
-        errLogToConsole: true,
-        precision: 10
-    }))
-    .on('error', console.error.bind(console))
-    .pipe(sourcemaps.write( { includeContent: false } ) )
-    .pipe(sourcemaps.init( { loadMaps: true } ) )
-    .pipe(sourcemaps.write () )
-    .pipe(browserSync.stream())
-    .pipe(rename({suffix:'.min'}))
-    .pipe(gulp.dest(styleBuild ))
-});
-
-gulp.task('watch_img', ['clean:img'], function() {
-    gulp.watch( imgUrl, ['img', 'clean:img']);
-});
-
-// gulp.task( 'default', ['sass', 'js', 'browser-sync', 'watch_img', 'jade'], function () {
-gulp.task( 'default', ['sass', 'js', 'browser-sync'], function () {
-    //-- Reload files changes.
-    gulp.watch( styleWatch, [ 'sass' ] );
-    gulp.watch( jsFile + '**/*.js', ['js'] );
-    gulp.watch( projectDir + '**/*.php' ).on('change', browserSync.reload);
-    // gulp.watch("web/*.html").on('change', browserSync.reload);
-    // gulp.watch('template/**/*.jade',['jade']);
-});
-
-// gulp.task('build', ['css:min', 'js:min', 'clean:img', 'jade']);
-gulp.task('build', ['css:min', 'js:min']);
+// gulp.task('build', gulp.series('cssjs:clear', 'css:build', 'js:build', 'img', 'clean:img'));
+gulp.task('build', gulp.series('cssjs:clear', 'css:build', 'js:build'));
