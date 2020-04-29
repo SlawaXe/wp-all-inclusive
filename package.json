@@ -44,7 +44,7 @@
     "font-awesome": "^4.7.0",
     "gulp": "^4.0.2",
     "gulp-cli": "github:gulpjs/gulp-cli",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "magnific-popup": "^1.1.0",
     "owl.carousel": "^2.3.4"
   }
